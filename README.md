@@ -1,2 +1,0 @@
-# rulebook
-Official FronteraMC Rulebook
