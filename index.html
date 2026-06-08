@@ -220,6 +220,40 @@
   .toc a:hover { color: var(--text); }
   .toc a.active { color: var(--heading); border-left-color: var(--chapter); }
 
+  /* section tabs */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin: 0 auto 3rem;
+  }
+  .tabs button {
+    font-family: 'Minecraftia', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 0.5rem 1.15rem;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .tabs button:hover { color: var(--text); }
+  .tabs button.active {
+    color: var(--heading);
+    border-color: var(--chapter);
+    background: var(--bg-soft);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* plain sub-section header (no icon) for the war overview */
+  .ch.plain { margin: 3.4rem 0 1.5rem; }
+
   @media (max-width: 1080px) {
     .toc { display: none; }
   }
@@ -227,16 +261,9 @@
 </head>
 <body>
 
-<aside class="toc" aria-label="Chapters">
-  <div class="toc-h">Rules</div>
-  <a href="#ch-chat">Chat</a>
-  <a href="#ch-sexual">Sexual content</a>
-  <a href="#ch-builds">Builds &amp; theft</a>
-  <a href="#ch-pvp">PvP</a>
-  <a href="#ch-raids">Raids</a>
-  <a href="#ch-wars">Wars</a>
-  <a href="#ch-cheating">Cheating</a>
-  <a href="#ch-realworld">Real-world</a>
+<aside class="toc" aria-label="Sections">
+  <div class="toc-h">On this page</div>
+  <nav id="toc-nav"></nav>
 </aside>
 
 <main>
@@ -245,6 +272,14 @@
 <h1>Rulebook</h1>
 
 <p class="intro">Frontera is a public Minecraft server. If you join, you've agreed to these. Most of it is common sense. Staff have the final call on anything ambiguous, so argue in your appeal, not in chat.</p>
+
+<nav class="tabs" aria-label="Rulebook sections">
+  <button class="active" data-tab="rules">Rules</button>
+  <button data-tab="raids">Raids</button>
+  <button data-tab="war">War</button>
+</nav>
+
+<div class="tab-panel active" data-tab="rules">
 
 <div class="ch" id="ch-how"><span class="ch-label"><svg class="chap-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M103.432 17.844c-1.118.005-2.234.032-3.348.08-2.547.11-5.083.334-7.604.678-20.167 2.747-39.158 13.667-52.324 33.67-24.613 37.4 2.194 98.025 56.625 98.025.536 0 1.058-.012 1.583-.022v.704h60.565c-10.758 31.994-30.298 66.596-52.448 101.43-2.162 3.4-4.254 6.878-6.29 10.406l34.878 35.733-56.263 9.423c-32.728 85.966-27.42 182.074 48.277 182.074v-.002l9.31.066c23.83-.57 46.732-4.298 61.325-12.887 4.174-2.458 7.63-5.237 10.467-8.42h-32.446c-20.33 5.95-40.8-6.94-47.396-25.922-8.956-25.77 7.52-52.36 31.867-60.452 5.803-1.93 11.723-2.834 17.565-2.834v-.406h178.33c-.57-44.403 16.35-90.125 49.184-126 23.955-26.176 42.03-60.624 51.3-94.846l-41.225-24.932 38.272-6.906-43.37-25.807h-.005l.002-.002.002.002 52.127-8.85c-5.232-39.134-28.84-68.113-77.37-68.113C341.14 32.26 222.11 35.29 149.34 28.496c-14.888-6.763-30.547-10.723-45.908-10.652zm.464 18.703c13.137.043 27.407 3.804 41.247 10.63l.033-.07c4.667 4.735 8.542 9.737 11.68 14.985H82.92l10.574 14.78c10.608 14.83 19.803 31.99 21.09 42.024.643 5.017-.11 7.167-1.814 8.836-1.705 1.67-6.228 3.875-15.99 3.875-40.587 0-56.878-44.952-41.012-69.06C66.238 46.64 79.582 39.22 95.002 37.12c2.89-.395 5.863-.583 8.894-.573zM118.5 80.78h46.28c4.275 15.734 3.656 33.07-.544 51.51H131.52c1.9-5.027 2.268-10.574 1.6-15.77-1.527-11.913-7.405-24.065-14.62-35.74zm101.553 317.095c6.44 6.84 11.192 15.31 13.37 24.914 3.797 16.736 3.092 31.208-1.767 43.204-4.526 11.175-12.576 19.79-22.29 26h237.19c14.448 0 24.887-5.678 32.2-14.318 7.312-8.64 11.2-20.514 10.705-32.352-.186-4.473-.978-8.913-2.407-13.18l-69.91-8.205 42.017-20.528c-8.32-3.442-18.64-5.537-31.375-5.537H220.053zm-42.668.506c-1.152-.003-2.306.048-3.457.153-2.633.242-5.256.775-7.824 1.63-15.11 5.02-25.338 21.54-20.11 36.583 3.673 10.57 15.347 17.71 25.654 13.938l1.555-.57h43.354c.946-6.36.754-13.882-1.358-23.192-3.71-16.358-20.543-28.483-37.815-28.54z"/></svg>How punishments work<svg class="chap-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M103.432 17.844c-1.118.005-2.234.032-3.348.08-2.547.11-5.083.334-7.604.678-20.167 2.747-39.158 13.667-52.324 33.67-24.613 37.4 2.194 98.025 56.625 98.025.536 0 1.058-.012 1.583-.022v.704h60.565c-10.758 31.994-30.298 66.596-52.448 101.43-2.162 3.4-4.254 6.878-6.29 10.406l34.878 35.733-56.263 9.423c-32.728 85.966-27.42 182.074 48.277 182.074v-.002l9.31.066c23.83-.57 46.732-4.298 61.325-12.887 4.174-2.458 7.63-5.237 10.467-8.42h-32.446c-20.33 5.95-40.8-6.94-47.396-25.922-8.956-25.77 7.52-52.36 31.867-60.452 5.803-1.93 11.723-2.834 17.565-2.834v-.406h178.33c-.57-44.403 16.35-90.125 49.184-126 23.955-26.176 42.03-60.624 51.3-94.846l-41.225-24.932 38.272-6.906-43.37-25.807h-.005l.002-.002.002.002 52.127-8.85c-5.232-39.134-28.84-68.113-77.37-68.113C341.14 32.26 222.11 35.29 149.34 28.496c-14.888-6.763-30.547-10.723-45.908-10.652zm.464 18.703c13.137.043 27.407 3.804 41.247 10.63l.033-.07c4.667 4.735 8.542 9.737 11.68 14.985H82.92l10.574 14.78c10.608 14.83 19.803 31.99 21.09 42.024.643 5.017-.11 7.167-1.814 8.836-1.705 1.67-6.228 3.875-15.99 3.875-40.587 0-56.878-44.952-41.012-69.06C66.238 46.64 79.582 39.22 95.002 37.12c2.89-.395 5.863-.583 8.894-.573zM118.5 80.78h46.28c4.275 15.734 3.656 33.07-.544 51.51H131.52c1.9-5.027 2.268-10.574 1.6-15.77-1.527-11.913-7.405-24.065-14.62-35.74zm101.553 317.095c6.44 6.84 11.192 15.31 13.37 24.914 3.797 16.736 3.092 31.208-1.767 43.204-4.526 11.175-12.576 19.79-22.29 26h237.19c14.448 0 24.887-5.678 32.2-14.318 7.312-8.64 11.2-20.514 10.705-32.352-.186-4.473-.978-8.913-2.407-13.18l-69.91-8.205 42.017-20.528c-8.32-3.442-18.64-5.537-31.375-5.537H220.053zm-42.668.506c-1.152-.003-2.306.048-3.457.153-2.633.242-5.256.775-7.824 1.63-15.11 5.02-25.338 21.54-20.11 36.583 3.673 10.57 15.347 17.71 25.654 13.938l1.555-.57h43.354c.946-6.36.754-13.882-1.358-23.192-3.71-16.358-20.543-28.483-37.815-28.54z"/></svg></span></div>
 <p>Most rules escalate on repeat offenses in the same category. First time is usually a warning or short mute, bans get longer from there. A few rules skip the escalator. Those will say so on the rule itself.</p>
@@ -365,7 +400,16 @@
 
 <section class="rule" data-sev="mod" id="r-14">
   <h2><span class="n">14</span>Auto farms<a href="#r-14" class="anchor">#</a></h2>
-  <p>Farms that run without active player input. AFK fishing rods, zero-tick designs, hopper-clock iron farms. A mob farm you actively stand at and kill mobs in is fine. If it produces while you do nothing, it's an auto farm.</p>
+  <p>Auto farms aren't allowed. An auto farm is any farm that runs without you making an active input on your keyboard or controller. That covers anything driven by detection, timers, or macros, and anything that kills mobs without you doing it, fall damage, other mobs, or any other non-player source.</p>
+  <p>What counts:</p>
+  <ul>
+    <li>Farms that run completely on their own with no player interaction.</li>
+    <li>Farms that rely on a constant water flow, like large mob farms that push entities across multiple chunks.</li>
+    <li>Crop farms that only break the blocks above the base. Cacti, sugarcane, bamboo, kelp and the rest, you have to break the base block too, not just harvest the top.</li>
+    <li>Mob farms that auto-spawn or auto-kill animals and mobs. Armadillo farms fall here too, the entities get spawned in for you.</li>
+  </ul>
+  <p>Automatic farms of these are flat out banned: <span class="warn">iron golems, slimes, endermen, shulkers, creepers, skeletons, zombies, any skeleton or zombie variant, blazes, piglins, villagers.</span></p>
+  <p>A mob farm you actively stand at and kill mobs in is still fine. If it produces while you do nothing, it's an auto farm.</p>
   <p class="pun">Farm removed + benefits stripped → 7d ban</p>
 </section>
 
@@ -389,11 +433,17 @@
   <p class="pun">Warning → 7d ban</p>
 </section>
 
+</div><!-- /rules -->
+
+<div class="tab-panel" data-tab="raids">
+
 <div class="ch" id="ch-raids"><span class="ch-label"><svg class="chap-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M476.72 51.375c-5.28 30.185-124.992 107.9-82.47 16.875-80.216 45.38-107.557 23.42-78.53-5.656-54.825 2.8-62.753 88.173-55.345 112.406l17.438 19.125c-2.14-31.218.404-48.445 19.5-71.47 13.764 20.614 18.495 33.702 52.062 6.97-9.393 53.52 54.61 18.747 88.75 10.938-15.248 14.048-35.153 32.723-38.875 55.468-1.24 7.587 6.208 17.925 14.125 25.626-9.443 2.236-41.474 8.91-38.563 26.22 2.912 17.31 12.14 11.885 3.5 15.28-12.403 2.766-21.156 5.58-39.593-2.187l18.874 20.717c28.39 14.79 73.904 7.306 83.594-14.875-14.778-1.22-27.125-4.674-33-11.53 44.022-8.34 66.764-39.243 85.78-75.032-33.638 18.95-42.158 17.784-56 16.313 35.514-14.365 46.876-108.943 38.75-145.188zM246.874 186.063l-56.78 70.125 79.186 86.906 75.095-50-97.5-107.03zm-62.344 90.125L21.657 467.625l21.438 23.53 205.75-144.374-64.313-70.592z"/></svg>Raids<svg class="chap-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M476.72 51.375c-5.28 30.185-124.992 107.9-82.47 16.875-80.216 45.38-107.557 23.42-78.53-5.656-54.825 2.8-62.753 88.173-55.345 112.406l17.438 19.125c-2.14-31.218.404-48.445 19.5-71.47 13.764 20.614 18.495 33.702 52.062 6.97-9.393 53.52 54.61 18.747 88.75 10.938-15.248 14.048-35.153 32.723-38.875 55.468-1.24 7.587 6.208 17.925 14.125 25.626-9.443 2.236-41.474 8.91-38.563 26.22 2.912 17.31 12.14 11.885 3.5 15.28-12.403 2.766-21.156 5.58-39.593-2.187l18.874 20.717c28.39 14.79 73.904 7.306 83.594-14.875-14.778-1.22-27.125-4.674-33-11.53 44.022-8.34 66.764-39.243 85.78-75.032-33.638 18.95-42.158 17.784-56 16.313 35.514-14.365 46.876-108.943 38.75-145.188zM246.874 186.063l-56.78 70.125 79.186 86.906 75.095-50-97.5-107.03zm-62.344 90.125L21.657 467.625l21.438 23.53 205.75-144.374-64.313-70.592z"/></svg></span></div>
 
 <section class="rule" data-sev="mod" id="r-18">
   <h2><span class="n">18</span>Defender abuse<a href="#r-18" class="anchor">#</a></h2>
-  <p>Defenders cannot use claim protection to trap raiders without a reasonable way to escape. This includes boxing players into 1x1 spaces, fully sealing areas to trap or block players, or building walls to the build limit just to stop raiders or pearls. Trenches and defenses are allowed as long as raiders still have a reasonable way out or can continue the raid. Traps are allowed only if they would still work in normal gameplay without claim protection. If someone is only trapped because they can’t break blocks due to claims, it is not allowed.</p>
+  <p>Defenders can't use claim protection to trap raiders. No boxing them into 1x1s. No fully sealing the claim to lock raiders in or out. Trenches are fine as long as attackers have a way out somewhere. Walling up to the build limit just to block pearls isn't allowed, raiders need to be able to pearl in.</p>
+  <p><span class="ok">Exception:</span> in-claim traps are fine if the trap design would still work outside of a claim. If it only catches raiders because they can't break blocks, that's abuse. If it would catch a player anywhere, it's a real trap.</p>
+  <p>Traps are allowed within a hard limit. <span class="ok">A trap is fine as long as it deals no more than 3 hearts of damage and the player can get out of it within 30 seconds.</span> Anything that does more damage than that, or holds someone longer, isn't a trap you're allowed to run.</p>
   <p class="pun">Forced changes + warning → 7d ban</p>
 </section>
 
@@ -402,22 +452,52 @@
   <p><span class="ok">Getting raided is a valid reason to declare war.</span> If someone hits your claim and you want revenge, the right move is the war system. Don't retaliate with grief or alt-account raiding. War gives you the rules and the result.</p>
 </section>
 
+</div><!-- /raids -->
+
+<div class="tab-panel" data-tab="war">
+
 <div class="ch" id="ch-wars"><span class="ch-label"><svg class="chap-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M247 26v163.2c-15 .8-28.5 3.3-39.4 7.4-6.5 2.4-12.1 5.4-16.5 9.3-4.5 4-8.1 9.5-8.1 16.1 0 6.6 3.6 12.1 8.1 16.1 4.4 3.9 10 6.9 16.5 9.3 13 4.9 29.8 7.6 48.4 7.6 18.6 0 35.4-2.7 48.4-7.6 6.5-2.4 12.1-5.4 16.5-9.3 4.5-4 8.1-9.5 8.1-16.1 0-6.6-3.6-12.1-8.1-16.1-4.4-3.9-10-6.9-16.5-9.3-10.9-4.1-24.4-6.6-39.4-7.4V26zm38 .99v70.02L378.4 62zM247 207.3v29.4c-13.1-.7-24.8-3-33.1-6.2-5.1-1.9-8.9-4.1-10.9-5.9-2-1.8-2-2.5-2-2.6 0-.1 0-.8 2-2.6s5.8-4 10.9-5.9c8.3-3.2 20-5.5 33.1-6.2zm18 0c13.1.7 24.8 3 33.1 6.2 5.1 1.9 8.9 4.1 10.9 5.9 2 1.8 2 2.5 2 2.6 0 .1 0 .8-2 2.6s-5.8 4-10.9 5.9c-8.3 3.2-20 5.5-33.1 6.2zm-9 70.7L96 358l128-16-32 144h128l-32-144 128 16z"/></svg>Wars<svg class="chap-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M247 26v163.2c-15 .8-28.5 3.3-39.4 7.4-6.5 2.4-12.1 5.4-16.5 9.3-4.5 4-8.1 9.5-8.1 16.1 0 6.6 3.6 12.1 8.1 16.1 4.4 3.9 10 6.9 16.5 9.3 13 4.9 29.8 7.6 48.4 7.6 18.6 0 35.4-2.7 48.4-7.6 6.5-2.4 12.1-5.4 16.5-9.3 4.5-4 8.1-9.5 8.1-16.1 0-6.6-3.6-12.1-8.1-16.1-4.4-3.9-10-6.9-16.5-9.3-10.9-4.1-24.4-6.6-39.4-7.4V26zm38 .99v70.02L378.4 62zM247 207.3v29.4c-13.1-.7-24.8-3-33.1-6.2-5.1-1.9-8.9-4.1-10.9-5.9-2-1.8-2-2.5-2-2.6 0-.1 0-.8 2-2.6s5.8-4 10.9-5.9c8.3-3.2 20-5.5 33.1-6.2zm18 0c13.1.7 24.8 3 33.1 6.2 5.1 1.9 8.9 4.1 10.9 5.9 2 1.8 2 2.5 2 2.6 0 .1 0 .8-2 2.6s-5.8 4-10.9 5.9c-8.3 3.2-20 5.5-33.1 6.2zm-9 70.7L96 358l128-16-32 144h128l-32-144 128 16z"/></svg></span></div>
 
+<p class="pun" style="margin-top:0;">War isn't live yet. It goes public within a month of launch at the latest, we're aiming for two weeks. Everything below is how it works once it's on.</p>
+
+<p>War is a core part of Frontera, so it has to run clean alongside the rest of the server. The flow is lore check, ticket, fight, outcome. Here's each step.</p>
+
+<div class="ch plain" id="ch-war-lore"><span class="ch-label">Lore validation</span></div>
+<p>Before any heavy geopolitical war reasoning, the attacking side clears two checks.</p>
+<p><span class="ok">Lore evidence.</span> Link and show any lore you've already written tied to your player, nation, or claim. It has to already exist, not get made up for the war form.</p>
+<p><span class="ok">Lore casus belli.</span> Write your casus belli as a paragraph of fiction. Then back it with the real stuff, give factual evidence for the claim and write out a plain, non-lore version of the same CB.</p>
+<p>Once the form's submitted, staff review it within 1 to 6 business days.</p>
+
+<div class="ch plain" id="ch-war-ticket"><span class="ch-label">Tickets &amp; review</span></div>
+<p>Approved form, a staff member opens a war ticket with every opposing party in it. Staff weigh the claim value on both sides, build quality and quantity included, and both sides get a set window to argue their case.</p>
+<p>After that, both sides have to agree on a war system to use. If they can't agree, the attacking side gets to pick.</p>
+<p>The form makes the attackers put in the discord name of the opposing claim owner, and that owner has to actually show up in the ticket. If they can't, a nation leader or someone in the government stands in for them.</p>
+
+<div class="ch plain" id="ch-war-outcome"><span class="ch-label">Outcomes &amp; roles</span></div>
+<p><span class="ok">Defenders win.</span> They can flip to attackers and go on the offensive. If they'd rather not, the original attackers get another shot after a two week grace. Defenders can also inhibit the war, pause it for two weeks, or counter-attack after two weeks. Both sides stay in the ticket and staff label it return later.</p>
+<p><span class="ok">Attackers win.</span> The claim drops under the attackers' nation claim, and cartographers mark it disputed but controlled by the attackers. The defenders then have to stay inside the attackers' nation claim for four weeks. Leave during that and the attackers can hit you again, this time for permanent ownership of the land. If the defenders counter-attack instead, they become the attackers, the roles switch, and the fight runs on the same claim.</p>
+
+<div class="ch plain" id="ch-war-close"><span class="ch-label">Closing a ticket</span></div>
+<p>Staff close a war ticket when:</p>
+<ul>
+  <li>The defenders surrender the claim and the attackers win.</li>
+  <li>Either side has used two attack attempts and a winner is decided.</li>
+  <li>The defending claim ignores the ticket and tries to dodge. The ticket closes and the claim transfers to the attackers.</li>
+</ul>
+
+<div class="ch plain" id="ch-war-value"><span class="ch-label">Claim value</span></div>
+<p>If the attackers can't meet the claim value needed for the war, staff can ask them to pick another claim they already own instead. If they won't, the ticket gets closed.</p>
+
 <section class="rule" data-sev="chat" id="r-20">
-  <h2><span class="n">20</span>War declarations &amp; outcomes<a href="#r-20" class="anchor">#</a></h2>
-  <p>Wars need a valid casus belli. The CB list is in the war docs. Without a valid CB, you're griefing, not warring, and rules 12 and 15 apply.</p>
-  <p>When the war ends, here's how it shakes out.</p>
-  <p><span class="ok">Attackers win.</span> The target claim falls under the attackers' nation claim and gets marked as disputed territory they control, and the attackers take a cut of the losing claim's balance. They control the land at this point, they don't own it yet.</p>
-  <p>After a wait of one to two weeks, the attackers can declare on the same claim again to actually take ownership. Win that second war and the claim is theirs for good. Lose it and the claim is freed, it goes back to the defenders and the dispute is over.</p>
-  <p><span class="ok">Defenders win.</span> They keep their claim and get a war shield, which blocks new declarations against that claim for a set period (around two weeks). Nothing else changes.</p>
-  <p>No mid-war deals unless both sides explicitly agree separately.</p>
+  <h2><span class="n">20</span>Casus belli<a href="#r-20" class="anchor">#</a></h2>
+  <p>Every war needs a valid casus belli. How you submit and prove one is the lore validation above, the lore CB plus a factual version of the claim. <span class="ok">Getting raided is a valid CB on its own.</span></p>
+  <p>Without a valid CB you're not at war, you're just griefing, and rules 12 and 15 apply instead. No mid-war deals unless both sides agree to them separately.</p>
 </section>
 
 <section class="rule" data-sev="mod" id="r-21">
   <h2><span class="n">21</span>War conduct<a href="#r-21" class="anchor">#</a></h2>
   <p>During a declared war, both sides can place and break water, webs, and cobblestone, including inside enemy claims. Other claim protection still applies. No breaking walls, no mining inside claims, no taking from chests.</p>
-  <p>Rule 18 (defender abuse) still applies during a war. You can't seal your claim or build 1x1 traps just because there's a war on. Same exception as always, real traps that would work outside a claim are fine.</p>
+  <p>Rule 18 (defender abuse) still applies during a war. You can't seal your claim or build 1x1 traps just because there's a war on. Same limits as always, a trap's only fine if it does no more than 3 hearts of damage and they can get out inside 30 seconds.</p>
   <p class="pun">Forced changes + warning → 7d ban</p>
 </section>
 
@@ -435,6 +515,10 @@
   <p>If the nation leader reports you for insiding and you can't prove it was a legit, backed rebellion, you get banned. How long is staff discretion, based on the context and whatever you actually did.</p>
   <p class="pun">Staff discretion. Theft or grief during a "rebellion" still falls under rules 11 and 12</p>
 </section>
+
+</div><!-- /war -->
+
+<div class="tab-panel active" data-tab="rules">
 
 <div class="ch" id="ch-cheating"><span class="ch-label"><svg class="chap-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M413.28 123.063C366.787 123.317 306.08 143 255.845 143c-56.868 0-124.174-23.704-171-19.156-23.414 2.274-40.642 10.16-52.28 30.937-11.64 20.78-17.23 56.337-10.97 113.19 8.578 77.917 73.225 118.973 128.656 99.405 11.513-4.064 30.972-25.256 49-46.125 9.014-10.434 17.993-20.687 27.03-28.72 9.04-8.03 18.23-14.624 29.564-14.624 11.335 0 20.493 6.594 29.53 14.625 9.04 8.033 18.018 18.286 27.032 28.72 18.028 20.87 37.487 42.06 49 46.125 55.45 19.574 118.93-21.672 128.688-99.563 7.137-56.986 1.753-92.528-9.938-113.28-11.69-20.754-29.346-28.665-53.22-30.907-2.983-.28-6.05-.46-9.186-.53-1.47-.035-2.97-.04-4.47-.032zM135.064 181.72c22.378-.2 44.746 10.556 67.125 30.78-43.4 54.67-108.488 37.044-130.188 0 21.022-20.738 42.04-30.594 63.063-30.78zm234.625 0c.7-.016 1.394-.007 2.093 0 21.023.186 42.073 10.042 63.095 30.78-21.7 37.044-86.82 54.67-130.22 0 21.68-19.592 43.354-30.312 65.033-30.78z"/></svg>Cheating<svg class="chap-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M413.28 123.063C366.787 123.317 306.08 143 255.845 143c-56.868 0-124.174-23.704-171-19.156-23.414 2.274-40.642 10.16-52.28 30.937-11.64 20.78-17.23 56.337-10.97 113.19 8.578 77.917 73.225 118.973 128.656 99.405 11.513-4.064 30.972-25.256 49-46.125 9.014-10.434 17.993-20.687 27.03-28.72 9.04-8.03 18.23-14.624 29.564-14.624 11.335 0 20.493 6.594 29.53 14.625 9.04 8.033 18.018 18.286 27.032 28.72 18.028 20.87 37.487 42.06 49 46.125 55.45 19.574 118.93-21.672 128.688-99.563 7.137-56.986 1.753-92.528-9.938-113.28-11.69-20.754-29.346-28.665-53.22-30.907-2.983-.28-6.05-.46-9.186-.53-1.47-.035-2.97-.04-4.47-.032zM135.064 181.72c22.378-.2 44.746 10.556 67.125 30.78-43.4 54.67-108.488 37.044-130.188 0 21.022-20.738 42.04-30.594 63.063-30.78zm234.625 0c.7-.016 1.394-.007 2.093 0 21.023.186 42.073 10.042 63.095 30.78-21.7 37.044-86.82 54.67-130.22 0 21.68-19.592 43.354-30.312 65.033-30.78z"/></svg></span></div>
 
@@ -520,17 +604,47 @@
   <p class="pun">Staff discretion</p>
 </section>
 
+</div><!-- /rules -->
+
 <hr>
 <p class="foot">play.fronteramc.fun · <a href="https://discord.gg/8ZU93CsbAk">discord</a></p>
 
 </main>
 
 <script>
-  // scroll-spy for sticky TOC
-  const tocLinks = document.querySelectorAll('.toc a');
-  const tocTargets = Array.from(tocLinks).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+  const tabButtons = document.querySelectorAll('.tabs button');
+  const panels = document.querySelectorAll('.tab-panel');
+  const tocAside = document.querySelector('.toc');
+  const tocNav = document.getElementById('toc-nav');
+  let tocLinks = [], tocTargets = [];
+
+  // rebuild the sticky TOC from chapters in the active tab
+  function buildToc() {
+    const chapters = Array.from(document.querySelectorAll('.tab-panel.active .ch[id]'));
+    tocNav.innerHTML = '';
+    chapters.forEach(c => {
+      const a = document.createElement('a');
+      a.href = '#' + c.id;
+      a.textContent = c.querySelector('.ch-label').textContent.trim();
+      tocNav.appendChild(a);
+    });
+    tocLinks = Array.from(tocNav.querySelectorAll('a'));
+    tocTargets = chapters;
+    tocAside.style.display = chapters.length < 2 ? 'none' : '';
+    updateActive();
+  }
+
+  function setTab(name) {
+    tabButtons.forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+    panels.forEach(p => p.classList.toggle('active', p.dataset.tab === name));
+    buildToc();
+    window.scrollTo({ top: 0 });
+  }
+
+  tabButtons.forEach(b => b.addEventListener('click', () => setTab(b.dataset.tab)));
 
   function updateActive() {
+    if (!tocTargets.length) return;
     const y = window.scrollY + 120;
     let current = tocTargets[0];
     for (const t of tocTargets) {
@@ -541,10 +655,24 @@
     });
   }
 
-  if (tocTargets.length) {
-    window.addEventListener('scroll', updateActive, { passive: true });
-    updateActive();
+  window.addEventListener('scroll', updateActive, { passive: true });
+
+  // deep link: if the hash points into a hidden tab, switch to it first
+  function tabForHash() {
+    if (!location.hash) return;
+    let el;
+    try { el = document.querySelector(location.hash); } catch (e) { return; }
+    if (!el) return;
+    const panel = el.closest('.tab-panel');
+    if (panel && !panel.classList.contains('active')) {
+      setTab(panel.dataset.tab);
+      el.scrollIntoView();
+    }
   }
+
+  buildToc();
+  tabForHash();
+  window.addEventListener('hashchange', tabForHash);
 </script>
 
 </body>
